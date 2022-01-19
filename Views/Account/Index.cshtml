@@ -1,0 +1,80 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    <a href="~/Account/Logout">Выйти</a>
+    <br>
+    <a href="~/Account/Register">Регистрация</a>
+}
+else
+{
+    <a href="~/Account/Login">Войти</a>
+    <br>
+    <a href="~/Account/Register">Регистрация</a>
+}
+
+<br />
+
+<div id="header"></div>
+
+<p>@User.Identity.Name</p>
+
+<div id="knows"></div>
+
+<div id="inputForm">
+    <input type="text" id="message" />
+    <input type="text" id="receiver" placeholder="Введите получателя" />
+    <input type="button" id="sendBtn" value="Отправить" />
+</div>
+
+<div id="chatroom"></div>
+
+<script src="~/js/jquery/jquery.min.js"></script>
+<script src="~/js/jquery/jquery.slim.min.js"></script>
+<script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script>
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/chat")
+        .build();
+
+    let userName = "";
+    // получение сообщения от сервера
+    hubConnection.on("Receive", function (message, userName) {
+
+
+        // создаем элемент <b> для имени пользователя
+        let userNameElem = document.createElement("b");
+        userNameElem.appendChild(document.createTextNode(userName + ": "));
+
+        // создает элемент <p> для сообщения пользователя
+        let elem = document.createElement("p");
+        elem.appendChild(userNameElem);
+        elem.appendChild(document.createTextNode(message));
+
+
+        var firstElem = document.getElementById("chatroom").firstChild;
+        document.getElementById("chatroom").insertBefore(elem, firstElem);
+
+    });
+
+    hubConnection.on("Notify", function (message) {
+
+        // создает элемент <p> для сообщения пользователя
+        let elem = document.createElement("p");
+        elem.appendChild(document.createTextNode(message));
+
+        var firstElem = document.getElementById("chatroom").firstChild;
+        document.getElementById("chatroom").insertBefore(elem, firstElem);
+    });
+
+
+    // отправка сообщения пользователя
+    document.getElementById("sendBtn").addEventListener("click", function (e) {
+        let message = document.getElementById("message").value;
+        let to = document.getElementById("receiver").value;
+        hubConnection.invoke("Send", message, to);
+    });
+    
+    hubConnection.start();
+</script>
