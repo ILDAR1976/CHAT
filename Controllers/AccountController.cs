@@ -39,6 +39,12 @@ namespace Chat.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult Forecast()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -84,7 +90,6 @@ namespace Chat.Controllers
             }
             return View(model);
         }
-
         
         public async Task<IActionResult> Logout()
         {

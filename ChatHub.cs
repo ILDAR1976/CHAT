@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 using Chat.Models;
 using System.Linq;
 
@@ -20,6 +22,34 @@ namespace Chat
         {
             _sp = sp;
         }
+
+
+        public async Task ForecastingMessages(string quantity, string bound)
+        {
+            var graph = new Graph();
+            var boundList = bound.Split(' ');
+            List<int> input = new List<int>();
+
+            foreach (string str in boundList)
+            {
+                input.Add(Int32.Parse(str));
+            }
+
+            graph.Initializing(input.ToArray());
+            List<Vertex> lst = graph.DFS();
+
+
+            if (lst.Count == 1)
+            {
+                await Clients.User(Context.UserIdentifier).SendAsync("Receive", "", "-1");
+            }
+            else
+            {
+                await Clients.User(Context.UserIdentifier).SendAsync("Receive", graph.Route, "" + graph.Route.TrimEnd('\n').Split('\n').Count());
+            }
+            
+        }
+
 
         public async Task Send(string message, string to)
         {
@@ -90,13 +120,11 @@ namespace Chat
             }
         }
 
-
         public override async Task OnConnectedAsync()
         {
             await Clients.All.SendAsync("Notify", $"Приветствуем {Context.UserIdentifier}");
             await base.OnConnectedAsync();
         }
-
 
         public async Task OnAllKnow()
         {

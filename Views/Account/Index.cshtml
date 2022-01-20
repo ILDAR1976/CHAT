@@ -6,6 +6,8 @@
     <a href="~/Account/Logout">Выйти</a>
     <br>
     <a href="~/Account/Register">Регистрация</a>
+    <br>
+    <a href="~/Account/Forecast">Прогнозирование</a>
 }
 else
 {
@@ -75,6 +77,6 @@ else
         let to = document.getElementById("receiver").value;
         hubConnection.invoke("Send", message, to);
     });
-    
+
     hubConnection.start();
 </script>

@@ -64,3 +64,5 @@ F:\projects\cs\JOB\Chat\obj\Debug\net5.0\Chat.RazorTargetAssemblyInfo.cs
 F:\projects\cs\JOB\Chat\obj\Debug\net5.0\Chat.Views.pdb
 F:\projects\cs\JOB\Chat\obj\Debug\net5.0\Chat.csproj.CopyComplete
 F:\projects\cs\JOB\Chat\bin\Debug\net5.0\libman.json
+F:\projects\cs\JOB\Chat\obj\Debug\net5.0\Chat.csprojAssemblyReference.cache
+F:\projects\cs\JOB\Chat\obj\Debug\net5.0\Razor\Views\Account\Forecast.cshtml.g.cs
