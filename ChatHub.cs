@@ -45,7 +45,18 @@ namespace Chat
             }
             else
             {
-                await Clients.User(Context.UserIdentifier).SendAsync("Receive", graph.Route, "" + graph.Route.TrimEnd('\n').Split('\n').Count());
+                var messageQuantity = graph.Route.TrimEnd('\n').Split('\n').Count();
+                var int_quatity = Convert.ToUInt32(quantity);
+
+                if (messageQuantity < (int_quatity - 1))
+                {
+                    await Clients.User(Context.UserIdentifier).SendAsync("Receive", "", "-1");
+                } else
+                {
+                    await Clients.User(Context.UserIdentifier).SendAsync("Receive", graph.Route, "" + messageQuantity);
+                }
+
+                
             }
             
         }
