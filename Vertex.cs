@@ -21,7 +21,7 @@ namespace Chat
 
         public void SubWeight(int weight)
         {
-            Weight -= weight;
+            if ( Weight >= weight) Weight -= weight;
         }
     }
 }

@@ -112,16 +112,34 @@ namespace Chat
 
         public virtual Vertex getAdjUnvisitedVertex(Vertex vertex, List<Vertex> adj)
         {
-   
+            Vertex highestPriorityPeak = null;
+
             foreach (var edge in Edges)
             {
                 if (edge.From == vertex && !adj.Contains(edge.To) && vertex.Weight != 0 )
                 {
-                    return edge.To;
+                    if (highestPriorityPeak != null)
+                    {
+                        if (edge.To.Weight > highestPriorityPeak.Weight)
+                        {
+                            highestPriorityPeak = edge.To;
+                        }
+                    } else
+                    {
+                        highestPriorityPeak = edge.To;
+                    }
                 }
             }
 
-            return null;
+            if (highestPriorityPeak != null)
+            {
+                return highestPriorityPeak;
+            } else
+            {
+                return null;
+            }
+
+            
 
         } // end getAdjUnvisitedVert()
     
